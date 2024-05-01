@@ -1,20 +1,20 @@
-// Fetch JSON 파일
-function fetchData(address){
-    return fetch(address)
-    .then((response) => {
-    // 응답을 JSON으로 파싱
+// fetchData.js
+
+// const backendDomain ='https://rooster-comic-mackerel.ngrok-free.app'
+const backendDomain = 'http://localhost:3001'
+
+async function fetchData(path) {
+    const address = backendDomain + path;
+    try {
+        const response = await fetch(address);
         if (!response.ok) {
-        throw new Error('Network response was not ok');
+            throw new Error('Network response was not ok');
         }
-        return response.json();
-    })
-    .catch((error) => {
-        // 에러 처리
-        console.error(
-        'There was a problem with your fetch operation:',
-        error
-        );
-    });
+        return response.json(); // JSON 데이터 반환
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error; // 에러 처리
+    }
 }
 
 function formatNumber(number) {
@@ -35,3 +35,5 @@ function formatDate(dateString) {
     const seconds = String(date.getSeconds()).padStart(2, '0');
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
+
+export { fetchData, formatNumber, formatDate };

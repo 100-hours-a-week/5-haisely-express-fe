@@ -1,12 +1,8 @@
-/*
-CHECKLIST
-[x] 글자 표기 관련 내용은 json 데이터랑 연결해놔야 쓸 수 있을 것 같음...
-[v] 인피니티 스크롤링...? 보류
-[x] 데이터 가져와야 함
-*/
+// boardFetch.js
 
+import { fetchData, formatNumber, formatDate } from './fetchData.js';
 
-function processBoardData(data){
+function processBoardData(data) {
     const boardData = data.boards;
     const listBox = document.getElementById('list');
     listBox.innerHTML = '';
@@ -42,9 +38,9 @@ function processBoardData(data){
     listBox.appendChild(fragment);
 }
 
-
-
-fetchData('/data/boards.json')
-    .then((data)=>{
-        processBoardData(data);
-    });
+fetchData('/boards')
+    .then((res) => {
+        console.log(res.data);
+        processBoardData(res.data);
+    })
+    .catch(error => console.error('Error in boardFetch:', error.message));
