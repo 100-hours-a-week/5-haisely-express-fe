@@ -2,6 +2,8 @@
 
 import { fetchData, formatNumber, formatDate } from './fetchData.js';
 
+import { getBackendDomain } from './config.js';
+
 function processBoardData(data) {
     const boardData = data.boards;
     const listBox = document.getElementById('list');
@@ -25,7 +27,7 @@ function processBoardData(data) {
             <hr class="horizontal-rule"/>   
             <article class="writer">
                 <div class="box">
-                <img class="logo" src="${post.profile_image_path} " alt="profile-img">
+                <img class="logo" src="${getBackendDomain()+post.profile_image_path} " alt="profile-img">
                 </div>
                 <h3>${post.nickname}</h3>
             </article>
