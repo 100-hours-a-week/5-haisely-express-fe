@@ -42,6 +42,7 @@ TODO
 
 // express 모듈을 불러옵니다.
 const express = require('express');
+const axios = require('axios');
 
 // express 애플리케이션을 생성합니다.
 const app = express();
