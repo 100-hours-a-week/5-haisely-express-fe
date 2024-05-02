@@ -112,10 +112,11 @@
                 <hr class="horizontal-rule"/>
             
                 <section class="write-comment">
-                    <form action="comment">
-                        <textarea id="comment" name="comment" cols="30" rows="4" placeholder="댓글을 남겨주세요!"></textarea>
+                    <form method="post">
+                        <label for="commentContent"></label>
+                        <textarea id="comment" name="commentContent" cols="30" rows="4" placeholder="댓글을 남겨주세요!"></textarea>
                         <hr class="horizontal-rule"/>   
-                        <button disabled id = "post-comment" class = "purple-small-btn" href="#" target="_blank">댓글 등록</button>
+                        <button disabled type="submit" id = "post-comment" class = "purple-small-btn" href="#" target="_blank">댓글 등록</button>
                     </form>
                 </section>
             <section class="comments" id = "comments">

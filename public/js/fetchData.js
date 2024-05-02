@@ -35,6 +35,17 @@ async function postData(jsonData, path){
     }
 }
 
+function extractIdFromUrl() {
+    var href = window.location.href;
+    var regex = /\/(\d+)(?:\/)?$/; // 맨 뒤에 있는 숫자를 추출
+    var match = regex.exec(href);
+    if (match && match.length > 1) {
+        return match[1]; // 첫 번째 그룹에 해당하는 부분 반환 (즉, 숫자)
+    } else {
+        return null; // 일치하는 것이 없으면 null 반환
+    }
+}
+
 function formatNumber(number) {
     if (number >= 1000) {
         return (number / 1000).toFixed(1) + 'k';
@@ -67,4 +78,4 @@ function formatDate(dateString) {
     return newDateString;
 }
 
-export { fetchData, formatNumber, formatDate, postData };
+export { fetchData, formatNumber, formatDate, postData, extractIdFromUrl };

@@ -7,7 +7,7 @@ CHECKLIST
 */
 
 import { getBackendDomain } from './config.js';
-import { fetchData, formatNumber, formatDate } from './fetchData.js';
+import { fetchData, formatNumber, formatDate, extractIdFromUrl, postData } from './fetchData.js';
 
 function processBoardDetailData(data){
     const boardData = data.board;
@@ -100,17 +100,7 @@ function processCommentData(data){
 }
 
 
-function extractIdFromUrl() {
-    var href = window.location.href;
-    var regex = /\/(\d+)(?:\/)?$/; // 맨 뒤에 있는 숫자를 추출
-    var match = regex.exec(href);
-    if (match && match.length > 1) {
-        return match[1]; // 첫 번째 그룹에 해당하는 부분 반환 (즉, 숫자)
-    } else {
-        return null; // 일치하는 것이 없으면 null 반환
-    }
-}
-// 예시: URL에서 숫자를 추출하여 콘솔에 출력
+
 const extractedId = extractIdFromUrl();
 console.log("Extracted ID from URL:", extractedId);
 
@@ -121,6 +111,24 @@ fetchData('/boards/'+extractedId)
         processBoardDetailData(res.data);
         processCommentData(res.data);
     });
+
+document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+
+    let jsonData = {};
+    formData.forEach((value, key) => {
+        jsonData[key] = value;
+    });
+    postData(jsonData,'/boards/'+extractedId+'/comments')
+    .then((res)=>{
+        console.log(res);
+        window.location.href = '/boards/detail/'+extractedId;
+    });
+});
+
+
 
 // fetchData('/data/comments.json')
 //     .then((data)=>{

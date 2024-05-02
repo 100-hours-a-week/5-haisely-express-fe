@@ -4,6 +4,11 @@ CHECKLIST
 [x] 댓글 버튼
 */
 
+
+import { getBackendDomain } from './config.js';
+import { fetchData, formatNumber, formatDate, extractIdFromUrl } from './fetchData.js';
+
+
 function validateComment() {
     var commentInput = document.getElementById('comment');
     var commentBtn = document.getElementById('post-comment');
