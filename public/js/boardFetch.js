@@ -42,6 +42,7 @@ function processBoardData(data) {
 
 fetchData('/boards')
     .then((res) => {
+        console.log(res);
         console.log(res.data);
         processBoardData(res.data);
     })
