@@ -19,6 +19,22 @@ async function fetchData(path) {
     }
 }
 
+async function postData(jsonData, path){
+    const address = getBackendDomain() + path;
+    try{
+        const response = await fetch(address, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+        return response.json();
+        }catch(error) {
+        console.error('Error:', error);
+    }
+}
+
 function formatNumber(number) {
     if (number >= 1000) {
         return (number / 1000).toFixed(1) + 'k';
@@ -28,7 +44,6 @@ function formatNumber(number) {
 }
 
 function formatDate(dateString) {
-    console.log(dateString);
     // 날짜 문자열에서 연, 월, 일, 시, 분, 초를 추출
     var parts = dateString.match(/(\d{4})\. (\d{1,2})\. (\d{1,2})\. (오전|오후) (\d{1,2}):(\d{1,2}):(\d{1,2})/);
 
@@ -52,4 +67,4 @@ function formatDate(dateString) {
     return newDateString;
 }
 
-export { fetchData, formatNumber, formatDate };
+export { fetchData, formatNumber, formatDate, postData };

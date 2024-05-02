@@ -4,6 +4,9 @@ CHECKLIST
 [ ] 본문, 제목 다 써있을 때 버튼 활성화
 */
 
+import { postData } from './fetchData.js';
+import { getBackendDomain } from './config.js';
+
 // 제목 27자 이상 확인
 function validTitle(){
     var titleInput = document.getElementById('title');
@@ -58,4 +61,25 @@ document.getElementById("title").addEventListener('input', function(){
 document.getElementById("content").addEventListener('input', function(){
     contentValid = validContent();
     validButton();
+});
+
+document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+
+    let jsonData = {};
+    formData.forEach((value, key) => {
+        jsonData[key] = value;
+    });
+
+    postData(jsonData,'/boards')
+    .then((res)=>{
+        console.log(res);
+        if (res.status === 201){
+            window.location.href = '/boards/detail/'+res.data.post_id;
+        }else{
+            window.location.href = '/boards'
+        }
+    });
 });
