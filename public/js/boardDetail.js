@@ -24,25 +24,17 @@ function validateComment() {
     }
 }
 
-// 게시글 삭제 버튼
-var boardDeleteBtn = document.getElementById('board-delete-btn');
-// 게시글 삭제 모달
-var boardDeleteModal = document.getElementById('board-delete');
+
 // 댓글 삭제 버튼
 var commentDeleteBtn = document.getElementById('comment-delete-btn')
 // 댓글 삭제 모달
 var commentDeleteModal = document.getElementById('comment-delete');
 
 
-
 document.getElementById('comment').addEventListener('input', validateComment);
 
 var overlay = document.getElementById('overlay');
-// board delete
-boardDeleteBtn.addEventListener('click', function() {
-    boardDeleteModal.style.display = 'flex';
-    freeze(overlay);
-});
+
 commentDeleteBtn.addEventListener('click', function() {
     commentDeleteModal.style.display = 'flex';
     freeze(overlay);

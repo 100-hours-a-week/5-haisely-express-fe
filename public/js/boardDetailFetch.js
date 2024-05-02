@@ -7,7 +7,10 @@ CHECKLIST
 */
 
 import { getBackendDomain } from './config.js';
-import { fetchData, formatNumber, formatDate, extractIdFromUrl, postData } from './fetchData.js';
+import { fetchData, formatNumber, formatDate, extractIdFromUrl, postData, deleteData } from './fetchData.js';
+
+// 게시글 삭제 모달
+const boardDeleteModal = document.getElementById('board-delete');
 
 function processBoardDetailData(data){
     const boardData = data.board;
@@ -37,8 +40,8 @@ function processBoardDetailData(data){
             </article>
 
             <article class = "small-buttons">
-                <a class="sbutton" href="/boards/${boardData.post_id}/edit" >수정</a>
-                <a class="sbutton" href="#" id="board-delete-btn" >삭제</a>
+                <a class="sbutton" >수정</a>
+                <a class="sbutton" id="board-delete-btn" >삭제</a>
             </article>
         </article>
     </article>
@@ -61,7 +64,16 @@ function processBoardDetailData(data){
     </article>
     `;
 
+
     listBox.appendChild(postElement);
+
+    const boardDeleteBtn = postElement.querySelector('#board-delete-btn');
+    if(boardDeleteBtn) {
+        boardDeleteBtn.addEventListener('click', function() {
+            boardDeleteModal.style.display = 'flex';
+            freeze(overlay);
+        });
+    }
 }
 
 function processCommentData(data){
@@ -127,6 +139,9 @@ document.querySelector('form').addEventListener('submit', function(event) {
         window.location.href = '/boards/detail/'+extractedId;
     });
 });
+
+
+
 
 
 

@@ -35,6 +35,22 @@ async function postData(jsonData, path){
     }
 }
 
+async function deleteData(path){
+    const address = getBackendDomain() + path;
+    try{
+        const response = await fetch(address, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+        return response.json();
+        }catch(error) {
+        console.error('Error:', error);
+    }
+}
+
 function extractIdFromUrl() {
     var href = window.location.href;
     var regex = /\/(\d+)(?:\/)?$/; // 맨 뒤에 있는 숫자를 추출
@@ -78,4 +94,4 @@ function formatDate(dateString) {
     return newDateString;
 }
 
-export { fetchData, formatNumber, formatDate, postData, extractIdFromUrl };
+export { fetchData, formatNumber, formatDate, postData, extractIdFromUrl, deleteData };
