@@ -39,12 +39,9 @@ async function deleteData(path){
     const address = getBackendDomain() + path;
     try{
         const response = await fetch(address, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(jsonData)
+            method: 'DELETE'
         });
+        console.log("hihi");
         return response.json();
         }catch(error) {
         console.error('Error:', error);

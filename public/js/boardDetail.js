@@ -6,7 +6,7 @@ CHECKLIST
 
 
 import { getBackendDomain } from './config.js';
-import { fetchData, formatNumber, formatDate, extractIdFromUrl } from './fetchData.js';
+import { fetchData, formatNumber, formatDate, extractIdFromUrl, deleteData } from './fetchData.js';
 
 
 function validateComment() {
@@ -25,18 +25,39 @@ function validateComment() {
 }
 
 
+const deleteCancelBtn = document.getElementById('board-delete-cancel');
+const deleteConfirmBtn = document.getElementById('board-delete-confirm');
+const boardDeleteModal = document.getElementById('board-delete');
+console.log(deleteConfirmBtn);
+
 // 댓글 삭제 버튼
-var commentDeleteBtn = document.getElementById('comment-delete-btn')
+var commentDeleteBtn = document.getElementById('comment-delete-btn');
 // 댓글 삭제 모달
 var commentDeleteModal = document.getElementById('comment-delete');
 
 
 document.getElementById('comment').addEventListener('input', validateComment);
 
+const extractedId = extractIdFromUrl();
+
 var overlay = document.getElementById('overlay');
+
+deleteCancelBtn.addEventListener('click', function(){
+    boardDeleteModal.style.display = 'none';
+    ddang(overlay);
+});
+
+deleteConfirmBtn.addEventListener('click', function(){
+    deleteData('/boards/'+extractedId)
+    .then((res)=>{
+        console.log(res);
+        window.location.href = '/boards'
+    })
+});
 
 commentDeleteBtn.addEventListener('click', function() {
     commentDeleteModal.style.display = 'flex';
     freeze(overlay);
 });
+
 
