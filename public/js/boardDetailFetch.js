@@ -9,6 +9,8 @@ CHECKLIST
 import { getBackendDomain } from './config.js';
 import { fetchData, formatNumber, formatDate, extractIdFromUrl, postData, deleteData } from './fetchData.js';
 
+const extractedId = extractIdFromUrl();
+
 // 게시글 삭제 모달
 const boardDeleteModal = document.getElementById('board-delete');
 
@@ -40,7 +42,7 @@ function processBoardDetailData(data){
             </article>
 
             <article class = "small-buttons">
-                <a class="sbutton" >수정</a>
+                <a class="sbutton"id="board-edit-btn">수정</a>
                 <a class="sbutton" id="board-delete-btn" >삭제</a>
             </article>
         </article>
@@ -72,6 +74,13 @@ function processBoardDetailData(data){
         boardDeleteBtn.addEventListener('click', function() {
             boardDeleteModal.style.display = 'flex';
             freeze(overlay);
+        });
+    }
+
+    const boardEditBtn = postElement.querySelector('#board-edit-btn');
+    if(boardEditBtn) {
+        boardEditBtn.addEventListener('click', function() {
+            window.location.href = '/boards/'+extractedId+'/edit';
         });
     }
 }
@@ -110,12 +119,6 @@ function processCommentData(data){
 
     listBox.appendChild(fragment);
 }
-
-
-
-const extractedId = extractIdFromUrl();
-console.log("Extracted ID from URL:", extractedId);
-
 
 fetchData('/boards/'+extractedId)
     .then((res)=>{

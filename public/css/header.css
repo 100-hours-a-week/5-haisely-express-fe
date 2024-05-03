@@ -10,6 +10,7 @@ header .title{
     font-weight: var(--regular-font-weight);
     font-size: var(--title-font-size);
     font-family: "Poor Story", system-ui;
+    cursor: pointer;
 }
 header .box {
     position: absolute;
