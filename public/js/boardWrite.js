@@ -4,6 +4,8 @@ CHECKLIST
 [ ] 본문, 제목 다 써있을 때 버튼 활성화
 */
 
+
+
 // 제목 27자 이상 확인
 function validTitle(){
     var titleInput = document.getElementById('title');
@@ -50,12 +52,15 @@ titleValid = validTitle();
 contentValid = validContent();
 validButton();
 
-
 document.getElementById("title").addEventListener('input', function(){
     titleValid = validTitle();
-    validButton();
-});
-document.getElementById("content").addEventListener('input', function(){
     contentValid = validContent();
     validButton();
 });
+document.getElementById("content").addEventListener('input', function(){
+    titleValid = validTitle();
+    contentValid = validContent();
+    validButton();
+});
+
+

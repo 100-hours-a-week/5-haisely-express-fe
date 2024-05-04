@@ -23,6 +23,8 @@ CHECKLIST
 [ ] button에 disable 넣어두기
 */
 
+import { postData, fetchData } from './fetchData.js';
+
 // 이메일 유효성 확인
 function validEmail(){
     var emailInput = document.getElementById('email');
@@ -169,4 +171,45 @@ document.getElementById('confirm-password').addEventListener('input', function()
 document.getElementById('nickname').addEventListener('change', function() {
     nicknameValid = validNickname();
     validButton();
+});
+
+
+document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+
+    let jsonData = {};
+    formData.forEach((value, key) => {
+        jsonData[key] = value;
+    });
+
+    console.log(jsonData);
+    fetchData('/users/email/check?email='+jsonData.email)
+    .then((res)=>{
+        console.log(res);
+        if (res.status !== 200){
+            alert('중복된 이메일입니다!');
+            return;
+        }
+    });
+
+    fetchData('/users/nickname/check?nickname='+jsonData.nickname)
+    .then((res)=>{
+        console.log(res);
+        if (res.status !== 200){
+            alert('중복된 닉네임입니다!');
+            return;
+        }
+    });
+
+    postData(jsonData,'/users/signup')
+    .then((res)=>{
+        console.log(res);
+        if (res.status === 201){
+            window.location.href = '/login';
+            alert('회원가입이 완료되었습니다!');
+        }else{
+            alert('입력 정보가 올바르지 않습니다!');
+        }
+    });
 });
