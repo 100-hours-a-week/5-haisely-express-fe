@@ -9,9 +9,10 @@ async function fetchData(path) {
     const address = getBackendDomain() + path;
     try {
         const response = await fetch(address);
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
+        // console.log(response);
+        // if (!response.ok) {
+        //     throw new Error('Network response was not ok');
+        // }
         return response.json(); // JSON 데이터 반환
     } catch (error) {
         console.error('Error fetching data:', error);
