@@ -3,6 +3,8 @@ TODO
 [ ] button에 disable 넣어두기
 */
 
+import { postData } from './fetchData.js';
+
 function validateInput() {
     var emailInput = document.getElementById('email');
     var passwordInput = document.getElementById('password');
@@ -21,6 +23,27 @@ function validateInput() {
         loginButton.style.cursor = 'not-allowed';
     }
 }
+
+document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+
+    let jsonData = {};
+    formData.forEach((value, key) => {
+        jsonData[key] = value;
+    });
+    console.log(jsonData);
+    postData(jsonData,'/users/login')
+    .then((res)=>{
+        console.log(res);
+        if (res.status === 200){
+            window.location.href = '/boards';
+        }else{
+            alert('입력 정보가 일치하지 않습니다');
+            window.location.href = '/login'
+        }
+    });
+});
 
 
 document.getElementById('email').addEventListener('input', validateInput);
