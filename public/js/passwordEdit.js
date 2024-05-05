@@ -1,3 +1,10 @@
+import { tostOn } from './tostMessage.js';
+import { patchData } from './fetchData.js';
+
+
+// user_id 바꾸기!!
+const extractedId = 1;
+
 function validPassword(){
     var passwordInput = document.getElementById('password');
     var passwordMessage = document.getElementById('password-help');
@@ -72,4 +79,24 @@ document.getElementById('password').addEventListener('change', function() {
 document.getElementById('confirm-password').addEventListener('input', function() {
     confirmPasswordValid = validConfirmPassword();
     validButton();
+});
+
+document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+
+    let jsonData = {};
+    formData.forEach((value, key) => {
+        jsonData[key] = value;
+    });
+    console.log(jsonData);
+
+    patchData(jsonData,'/users/'+extractedId+'/password')
+    .then((res)=>{
+        console.log(res);
+        if (res.status !== 200){
+            alert("변경 중 오류가 발생했습니다!");
+        }
+    });
+    tostOn();
 });
