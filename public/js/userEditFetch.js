@@ -1,7 +1,7 @@
 
 import { getBackendDomain } from './config.js';
 import { tostOn } from './tostMessage.js';
-import { fetchData, formatNumber, formatDate, extractIdFromUrl, postData, deleteData, patchData } from './fetchData.js';
+import { fetchData, deleteData, patchData } from './fetchData.js';
 
 // user_id 바꾸기!!
 const extractedId = 1;
@@ -78,5 +78,34 @@ fetchData('/users/'+extractedId)
         processBoardEditData(res.data);
     });
 
+const deleteCancelBtn = document.getElementById('user-delete-cancel');
+const deleteConfirmBtn = document.getElementById('user-delete-confirm');
+const userDeleteModal = document.getElementById('user-delete');
+console.log(deleteConfirmBtn);
+
+
+var overlay = document.getElementById('overlay');
+
+deleteCancelBtn.addEventListener('click', function(){
+    userDeleteModal.style.display = 'none';
+    ddang(overlay);
+});
+
+deleteConfirmBtn.addEventListener('click', function(){
+    deleteData('/users/'+extractedId)
+    .then((res)=>{
+        console.log(res);
+        window.location.href = '/login'
+    })
+});
+
+
+const userDeleteBtn = postElement.querySelector('#user-delete-btn');
+if(userDeleteBtn) {
+    userDeleteBtn.addEventListener('click', function() {
+        userDeleteModal.style.display = 'flex';
+        freeze(overlay);
+    });
+}
 
 

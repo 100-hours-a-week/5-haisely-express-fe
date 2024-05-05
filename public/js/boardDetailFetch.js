@@ -143,12 +143,3 @@ document.querySelector('form').addEventListener('submit', function(event) {
     });
 });
 
-
-
-
-
-
-// fetchData('/data/comments.json')
-//     .then((data)=>{
-//         processCommentData(data);
-//     });
