@@ -23,7 +23,7 @@ CHECKLIST
 [ ] button에 disable 넣어두기
 */
 
-import { postData, fetchData } from './fetchData.js';
+import { postData, fetchData, uploadImageAndGetPath } from './fetchData.js';
 import { getBackendDomain } from './config.js';
 
 // 이메일 유효성 확인
@@ -224,34 +224,3 @@ document.querySelector('form').addEventListener('submit', function(event) {
         console.error('Error occurred:', error);
     });
 });
-
-
-function uploadImageAndGetPath() {
-    return new Promise((resolve, reject) => {
-        var formData = new FormData();
-        var file = document.getElementById('real-upload').files[0];
-
-        if (!file) {
-            resolve();
-            return;
-        }
-
-        formData.append('myFile', file);
-
-        fetch(getBackendDomain()+'/uploadImg', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(res => {
-            var imagePath = res.data.file_path;
-            resolve(imagePath); // 이미지 경로 반환
-        })
-        .catch(error => {
-            console.error('Error uploading image:', error);
-            reject(error);
-        });
-    });
-}
-
-//1234qwer!Q

@@ -1,11 +1,34 @@
 
 import { getBackendDomain } from './config.js';
 import { tostOn } from './tostMessage.js';
-import { fetchData, deleteData, patchData } from './fetchData.js';
+import { fetchData, deleteData, patchData, uploadImageAndGetPath } from './fetchData.js';
 
 // user_id 바꾸기!!
 const extractedId = 1;
 console.log(extractedId);
+
+function getProfileImage(e) {
+    const file = e.currentTarget.files[0]; // 첫 번째 파일만 선택
+
+    // 파일을 안 올린 경우
+    if (!file) {
+        return;
+    }
+
+    // 파일 타입 검사
+    if (!file.type.match("image/.*")) {
+        alert('이미지 파일만 업로드가 가능합니다.');
+        return;
+    }
+
+    // 미리보기 업로드
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const imagePreview = document.getElementById('upload-img');
+        imagePreview.setAttribute('src', e.target.result);
+    };
+    reader.readAsDataURL(file);
+}
 
 function processBoardEditData(data){
     console.log(data);
@@ -22,8 +45,9 @@ function processBoardEditData(data){
             <div class="profile-box">
                 <img id="upload-img" src="${getBackendDomain()+userData.profile_image}" alt="profile-img">
             </div>
-            <div class="edit">
-                <a class="sbutton" href="#" target="_blank">변경</a>
+            <input type="file" id="real-upload" name="profile-img" accept="images/*">
+            <div class="edit" id="plus-img">
+                <a class="sbutton">변경</a>
             </div>
         </article>
         <h3>이메일</h3>
@@ -34,41 +58,65 @@ function processBoardEditData(data){
         <button id="save" class="purple-btn" type="submit">수정하기</button>
     </form>
     `;
-
-
+    
     listBox.appendChild(userElement);
     // --------
+    const realUpload = document.getElementById('real-upload');
+    const plus = document.getElementById('plus-img');
+
+    plus.addEventListener('click', function () {
+        const imagePreview = document.getElementById('upload-img');
+
+        imagePreview.setAttribute('src',"/images/default.png");
+        realUpload.click();
+    });
+    realUpload.addEventListener('change', getProfileImage);
+
     const boardEditBtn = userElement.querySelector('#save');
 
     console.log(boardEditBtn);
     document.querySelector('form').addEventListener('submit', function(event) {
         event.preventDefault();
         const formData = new FormData(this);
-
         let jsonData = {};
-        formData.forEach((value, key) => {
-            jsonData[key] = value;
-        });
-        console.log(jsonData);
+    
+        uploadImageAndGetPath()
+        .then(imagePath => {
 
-        fetchData('/users/nickname/check?nickname='+jsonData.nickname)
-        .then((res)=>{
-            console.log(res);
-            if (res.status !== 200){
+    
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+            console.log(jsonData);
+            jsonData.profileImage = imagePath;
+            
+            // 중복된 닉네임인지 확인
+            return fetchData('/users/nickname/check?nickname=' + jsonData.nickname);
+        })
+        .then(nicknameCheckRes => {
+            console.log(nicknameCheckRes);
+            if (nicknameCheckRes.status !== 200) {
+                // 중복된 닉네임이면 알림 표시 후 Promise를 거부하여 다음 작업을 중지
                 alert('중복된 닉네임입니다!');
-                return;
+                throw new Error('중복된 닉네임');
             }
-        });
-
-        patchData(jsonData,'/users/'+extractedId)
-        .then((res)=>{
-            console.log(res);
-            if (res.status !== 200){
+    
+            // 중복된 닉네임이 아니면 patchData 함수 실행
+            return patchData(jsonData, '/users/' + extractedId);
+        })
+        .then(patchRes => {
+            console.log(patchRes);
+            if (patchRes.status !== 200) {
                 alert("변경 중 오류가 발생했습니다!");
             }
+            // patchData 함수가 성공하든 실패하든 tostOn 함수 호출
+            tostOn();
+        })
+        .catch(error => {
+            console.error('Error occurred:', error);
         });
-        tostOn();
     });
+    
 
 }
 
