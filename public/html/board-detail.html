@@ -38,8 +38,8 @@
         <h2 class="title">댓글을 삭제하시겠습니까?</h2>
         <p>삭제한 내용은 복구 할 수 없습니다.</p>
         <article class = "window-buttons">
-            <a class="black wbutton" href="/boards/detail/1">취소</a>
-            <a class="purple wbutton" href="/boards/detail/1">확인</a>
+            <a class="black wbutton" id="comment-delete-cancel">취소</a>
+            <a class="purple wbutton" id="comment-delete-confirm">확인</a>
         </article>
     </div>
     <div class="overlay" id="overlay"></div>
@@ -93,7 +93,7 @@
 
                 <article class = "main">
                     <!-- 그 preload 넣기 -->
-                    <img class="board-image" src="/images/main.webp" alt="board-img">
+                    <!-- <img class="board-image" src="/images/main.webp" alt="board-img"> -->
                     <p class = "content">내용    </article>
 
                 <article class = "infos">
@@ -116,7 +116,8 @@
                         <label for="commentContent"></label>
                         <textarea id="comment" name="commentContent" cols="30" rows="4" placeholder="댓글을 남겨주세요!"></textarea>
                         <hr class="horizontal-rule"/>   
-                        <button disabled type="submit" id = "post-comment" class = "purple-small-btn" href="#" target="_blank">댓글 등록</button>
+                        <button disabled type="submit" id = "post-comment" class = "purple-small-btn comment-btn" href="#" target="_blank">댓글 등록</button>
+                        <button disabled type="submit" id = "edit-comment" class = "purple-small-btn comment-btn" href="#" target="_blank" style="display:none">댓글 수정</button>
                     </form>
                 </section>
             <section class="comments" id = "comments">
@@ -168,8 +169,8 @@
                         <h4 class="time-detail">2021-01-01 00:00:00</h4>
                         </article>
                         <article class = "small-buttons">
-                            <a class="sbutton" href="#" target="_blank">수정</a>
-                            <a class="sbutton" href="#" id = "comment-delete-btn">삭제</a>
+                            <div class="sbutton no-link" href="#" target="_blank">수정</div>
+                            <div class="sbutton no-link" href="#" id = "comment-delete-btn">삭제</div>
                         </article>
                     </article>
                     <h4 class = "content">댓글 내용</h4>

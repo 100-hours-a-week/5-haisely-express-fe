@@ -1,15 +1,6 @@
 import { postData } from './fetchData.js';
 import { getBackendDomain } from './config.js';
 
-document.getElementById("title").addEventListener('input', function(){
-    titleValid = validTitle();
-    validButton();
-});
-document.getElementById("content").addEventListener('input', function(){
-    contentValid = validContent();
-    validButton();
-});
-
 document.querySelector('form').addEventListener('submit', function(event) {
     event.preventDefault();
 
