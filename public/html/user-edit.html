@@ -19,6 +19,7 @@
         <link rel="preload" href="/images/default.png" as="image">
         <script src="/js/modal.js"></script>
         <script src="/js/validUtils.js"></script>
+        <script type="module" src="/js/userEditFetch.js"></script>
         <script type="module" src="/js/userEdit.js"></script>
         <script type="module" src="/js/tostMessage.js"></script>
         <script type="module" src="/js/dropdown.js"></script>
@@ -55,6 +56,7 @@
                 <h1 class="title">회원정보수정</h1>
             </section>
             <section class="main">
+                <div id="form-div">
                 <form>
                     <article class="profile-img">
                         <h3>프로필 사진*</h3>
@@ -70,8 +72,9 @@
                     <label for="nickname"><h3>닉네임</h3></label>
                     <input id="nickname" type="text" name="nickname" placeholder="새 닉네임을 입력하세요" value="스타트업코드">
                     <p id="nickname-help" class = "help-text">&nbsp</p>
-                    <button id="save" class="purple-btn" type="button">수정하기</button>
+                    <button id="save" class="purple-btn" type="submit">수정하기</button>
                 </form>
+                </div>
                     <article class="links">
                         <a class="go-login" id="user-delete-btn"><h4>회원 탈퇴</h4></a>
                     </article>

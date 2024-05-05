@@ -45,5 +45,7 @@ userDeleteBtn.addEventListener('click', function() {
     freeze(overlay);
 });
 
+
+
 var editBtn = document.getElementById('save');
 editBtn.addEventListener('click',validNickname);
