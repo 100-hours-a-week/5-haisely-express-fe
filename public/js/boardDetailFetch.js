@@ -7,7 +7,7 @@ CHECKLIST
 */
 
 import { getBackendDomain } from './config.js';
-import { fetchData, formatNumber, formatDate, extractIdFromUrl, postData, deleteData } from './fetchData.js';
+import { fetchData, formatNumber, formatDate, extractIdFromUrl, postData, deleteData, patchData } from './fetchData.js';
 
 const extractedId = extractIdFromUrl();
 
@@ -70,6 +70,7 @@ function processBoardDetailData(data){
     listBox.appendChild(postElement);
 
     const boardDeleteBtn = postElement.querySelector('#board-delete-btn');
+
     if(boardDeleteBtn) {
         boardDeleteBtn.addEventListener('click', function() {
             boardDeleteModal.style.display = 'flex';
@@ -96,6 +97,7 @@ function processCommentData(data){
 
         const unit  = document.createElement('div');
         unit.classList.add('unit');
+        unit.setAttribute('data-comment-id', comment.comment_id);
         unit.innerHTML = 
             `<article class="detail">
                     <article class="text-detail">
@@ -108,8 +110,8 @@ function processCommentData(data){
                     <h4 class="time-detail">${formatDate(comment.created_at)}</h4>
                     </article>
                     <article class = "small-buttons">
-                        <a class="sbutton" href="#" target="_blank">수정</a>
-                        <a class="sbutton" href="#" id = "comment-delete-btn">삭제</a>
+                    <a class="sbutton comment-edit-button">수정</a>
+                    <a class="sbutton comment-delete-btn">삭제</a>
                     </article>
             </article>
                 <h4 class = "content">${comment.comment_content}</h4>`;
@@ -118,6 +120,24 @@ function processCommentData(data){
     });
 
     listBox.appendChild(fragment);
+
+    const commentEditBtn = document.querySelector('#edit-comment');
+    const commentPostBtn = document.querySelector('#post-comment');
+    const commentBox = document.getElementById('comment');
+
+    document.querySelectorAll('.comment-edit-button').forEach(button => {
+        button.addEventListener('click', function() {
+            console.log(commentEditBtn);
+            const unit = this.closest('.unit');
+            const commentId = unit.dataset.commentId;
+            console.log(commentId); 
+            commentPostBtn.style.display = 'none';
+            commentEditBtn.style.display = 'flex';
+            commentEditBtn.setAttribute('data-comment-id', commentId);
+            const commentContent = unit.querySelector('.content');
+            commentBox.textContent = commentContent.textContent;
+        });
+    });
 }
 
 fetchData('/boards/'+extractedId)
@@ -129,13 +149,17 @@ fetchData('/boards/'+extractedId)
 
 document.querySelector('form').addEventListener('submit', function(event) {
     event.preventDefault();
+});
 
-    const formData = new FormData(this);
+document.getElementById('post-comment').addEventListener('click', function(event) {
+    const form = this.closest('form');
+    const formData = new FormData(form);
 
     let jsonData = {};
     formData.forEach((value, key) => {
         jsonData[key] = value;
     });
+
     postData(jsonData,'/boards/'+extractedId+'/comments')
     .then((res)=>{
         console.log(res);
@@ -143,3 +167,20 @@ document.querySelector('form').addEventListener('submit', function(event) {
     });
 });
 
+
+document.getElementById('edit-comment').addEventListener('click', function(event) {
+    const commentId = this.dataset.commentId;
+    const form = this.closest('form');
+    const formData = new FormData(form);
+
+    let jsonData = {};
+    formData.forEach((value, key) => {
+        jsonData[key] = value;
+    });
+
+    patchData(jsonData,'/boards/'+extractedId+'/comments/'+commentId)
+    .then((res)=>{
+        console.log(res);
+        window.location.href = '/boards/detail/'+extractedId;
+    });
+});

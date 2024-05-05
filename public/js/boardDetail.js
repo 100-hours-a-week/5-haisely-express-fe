@@ -12,9 +12,9 @@ import { fetchData, formatNumber, formatDate, extractIdFromUrl, deleteData } fro
 
 function validateComment() {
     var commentInput = document.getElementById('comment');
-    var commentBtn = document.getElementById('post-comment');
+    var commentBtns = document.querySelectorAll('.comment-btn');
     
-    if (isValue(commentInput.value)) {
+    commentBtns.forEach(function(commentBtn) {if (isValue(commentInput.value)) {
         commentBtn.style.backgroundColor = 'var(--btn-purple-possible)';
         commentBtn.disabled = false;
         commentBtn.style.cursor = 'pointer';
@@ -22,7 +22,7 @@ function validateComment() {
         commentBtn.style.backgroundColor = 'var(--btn-purple)'
         commentBtn.disabled = true;
         commentBtn.style.cursor = 'not-allowed';
-    }
+    }});
 }
 
 

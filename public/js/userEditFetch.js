@@ -100,7 +100,7 @@ deleteConfirmBtn.addEventListener('click', function(){
 });
 
 
-const userDeleteBtn = postElement.querySelector('#user-delete-btn');
+const userDeleteBtn = document.getElementById('#user-delete-btn');
 if(userDeleteBtn) {
     userDeleteBtn.addEventListener('click', function() {
         userDeleteModal.style.display = 'flex';
