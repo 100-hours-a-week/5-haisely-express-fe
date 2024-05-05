@@ -31,8 +31,8 @@ const deleteConfirmBtn = document.getElementById('board-delete-confirm');
 const boardDeleteModal = document.getElementById('board-delete');
 console.log(deleteConfirmBtn);
 
-// 댓글 삭제 버튼
-var commentDeleteBtn = document.getElementById('comment-delete-btn');
+const commentCancelBtn = document.getElementById('comment-delete-cancel');
+const commentConfirmBtn = document.getElementById('comment-delete-confirm');
 // 댓글 삭제 모달
 var commentDeleteModal = document.getElementById('comment-delete');
 
@@ -56,9 +56,17 @@ deleteConfirmBtn.addEventListener('click', function(){
     })
 });
 
-commentDeleteBtn.addEventListener('click', function() {
-    commentDeleteModal.style.display = 'flex';
-    freeze(overlay);
+commentCancelBtn.addEventListener('click', function(){
+    commentDeleteModal.style.display = 'none';
+    ddang(overlay);
 });
 
+commentConfirmBtn.addEventListener('click', function(){
+    const commentId = commentDeleteModal.dataset.commentId;
+    deleteData('/boards/'+extractedId+'/comments/'+commentId)
+    .then((res)=>{
+        console.log(res);
+        window.location.href = '/boards/detail/'+extractedId
+    })
+});
 

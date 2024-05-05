@@ -14,6 +14,9 @@ const extractedId = extractIdFromUrl();
 // 게시글 삭제 모달
 const boardDeleteModal = document.getElementById('board-delete');
 
+// 댓글 삭제 모달
+const commentDeleteModal = document.getElementById('comment-delete');
+
 function processBoardDetailData(data){
     const boardData = data.board;
     const listBox = document.getElementById('post');
@@ -124,6 +127,18 @@ function processCommentData(data){
     const commentEditBtn = document.querySelector('#edit-comment');
     const commentPostBtn = document.querySelector('#post-comment');
     const commentBox = document.getElementById('comment');
+
+    document.querySelectorAll('.comment-delete-btn').forEach(button => {
+        button.addEventListener('click', function() {
+
+            const unit = this.closest('.unit');
+            const commentId = unit.dataset.commentId;
+            console.log(commentId); 
+            commentDeleteModal.setAttribute('data-comment-id', commentId);
+            commentDeleteModal.style.display = 'flex';
+            freeze(overlay);
+        });
+    });
 
     document.querySelectorAll('.comment-edit-button').forEach(button => {
         button.addEventListener('click', function() {
