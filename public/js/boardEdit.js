@@ -8,11 +8,15 @@ CHECKLIST
 */
 
 import { getBackendDomain } from './config.js';
+import {validTitle,validContent } from './boardWrite.js';
 import { fetchData, formatNumber, formatDate, extractIdFromUrl, postData, deleteData, patchData, uploadImageAndGetPath } from './fetchData.js';
 
 var href = window.location.href;
 const extractedId = href.match(/\/boards\/(\d+)/)[1];
 console.log(extractedId);
+let titleValid = false;
+let contentValid = false;
+let writeButton;
 
 function processBoardEditData(data){
     const boardData = data.board;
@@ -49,6 +53,25 @@ function processBoardEditData(data){
     listBox.appendChild(postElement);
     const boardEditBtn = postElement.querySelector('#write-button');
 
+    writeButton = document.getElementById('write-button');
+    titleValid = validTitle();
+    contentValid = validContent();
+    validButton();
+
+    console.log(document.getElementById("title"));
+
+    document.getElementById("title").addEventListener('input', function(){
+        titleValid = validTitle();
+        contentValid = validContent();
+        validButton();
+    });
+    document.getElementById("content").addEventListener('input', function(){
+        titleValid = validTitle();
+        contentValid = validContent();
+        validButton();
+    });
+    
+
     console.log(boardEditBtn);
     document.querySelector('form').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -79,11 +102,23 @@ function processBoardEditData(data){
     });
     
 }
-fetchData('/boards/'+extractedId)
-    .then((res)=>{
-        console.log(res);
-        processBoardEditData(res.data);
-    });
+
+function validButton(){
+    if (titleValid&&contentValid){
+        writeButton.style.backgroundColor = 'var(--btn-purple-possible)';
+        writeButton.disabled = false;
+        writeButton.style.cursor = 'pointer';
+    }else {
+        writeButton.style.backgroundColor = 'var(--btn-purple)';
+        writeButton.disabled = true;
+        writeButton.style.cursor = 'not-allowed';
+    }
+}
 
 
-
+Promise.all([
+    fetchData('/boards/'+extractedId),
+]).then(([res]) => {
+    console.log(res);
+    processBoardEditData(res.data);
+});

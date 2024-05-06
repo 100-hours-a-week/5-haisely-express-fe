@@ -30,7 +30,7 @@ function getProfileImage(e) {
     reader.readAsDataURL(file);
 }
 
-function processBoardEditData(data){
+function processUserEditData(data){
     console.log(data);
     const userData = data.user;
     const listBox = document.getElementById('form-div');
@@ -121,11 +121,13 @@ function processBoardEditData(data){
 
 }
 
-fetchData('/users/'+extractedId)
-    .then((res)=>{
-        console.log(res);
-        processBoardEditData(res.data);
-    });
+
+Promise.all([
+    fetchData('/users/'+extractedId),
+]).then(([res]) => {
+    console.log(res);
+    processUserEditData(res.data);
+});
 
 const deleteCancelBtn = document.getElementById('user-delete-cancel');
 const deleteConfirmBtn = document.getElementById('user-delete-confirm');
