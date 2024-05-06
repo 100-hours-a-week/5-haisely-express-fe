@@ -8,7 +8,7 @@ CHECKLIST
 */
 
 import { getBackendDomain } from './config.js';
-import { fetchData, formatNumber, formatDate, extractIdFromUrl, postData, deleteData, patchData } from './fetchData.js';
+import { fetchData, formatNumber, formatDate, extractIdFromUrl, postData, deleteData, patchData, uploadImageAndGetPath } from './fetchData.js';
 
 var href = window.location.href;
 const extractedId = href.match(/\/boards\/(\d+)/)[1];
@@ -23,6 +23,7 @@ function processBoardEditData(data){
 
     const postElement = document.createElement('div');
     postElement.classList.add('post-entity');
+    const latestImg =  boardData.file_path;
     postElement.innerHTML = `
     <form method="patch">
     <label for="postTitle"><h3>제목 * </h3></label>
@@ -36,7 +37,7 @@ function processBoardEditData(data){
     <p class="help-text left-margin">*helper text</p>
     <div class="board-image">
         <label for="attachFilePath"><h3>이미지</h3></label>
-        <input class = "left-margin"type="file" name="attachFilePath">
+        <input class = "left-margin"type="file" name="attachFilePath" id = "real-upload" accept="images/*">
     </div>
     <button type="submit" class="purple-btn" id="write-button"">수정하기</button>
 </form>
@@ -50,22 +51,31 @@ function processBoardEditData(data){
     document.querySelector('form').addEventListener('submit', function(event) {
         event.preventDefault();
         const formData = new FormData(this);
-
-        let jsonData = {};
-        formData.forEach((value, key) => {
-            jsonData[key] = value;
-        });
-        console.log(jsonData);
-        patchData(jsonData,'/boards/'+extractedId)
-        .then((res)=>{
+    
+        uploadImageAndGetPath()
+        .then(imagePath => {
+            let jsonData = {};
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+            console.log(jsonData);
+            jsonData.attachFilePath = imagePath === undefined? latestImg : imagePath;
+    
+            return patchData(jsonData, '/boards/' + extractedId);
+        })
+        .then((res) => {
             console.log(res);
-            if (res.status === 201){
-                window.location.href = '/boards/detail/'+extractedId;
-            }else{
-                window.location.href = '/boards'
+            if (res.status === 201) {
+                window.location.href = '/boards/detail/' + extractedId;
+            } else {
+                window.location.href = '/boards';
             }
+        })
+        .catch(error => {
+            console.error('Error occurred:', error);
         });
     });
+    
 
 }
 

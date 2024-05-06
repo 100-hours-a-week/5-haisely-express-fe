@@ -38,12 +38,13 @@ function processBoardEditData(data){
 
     const userElement = document.createElement('div');
     userElement.classList.add('user-element');
+    const latestProfile = userData.profile_image;
     userElement.innerHTML = `
     <form>
         <article class="profile-img">
             <h3>프로필 사진*</h3>
             <div class="profile-box">
-                <img id="upload-img" src="${getBackendDomain()+userData.profile_image}" alt="profile-img">
+                <img id="upload-img" src="${getBackendDomain()+ latestProfile}" alt="profile-img">
             </div>
             <input type="file" id="real-upload" name="profile-img" accept="images/*">
             <div class="edit" id="plus-img">
@@ -88,7 +89,7 @@ function processBoardEditData(data){
                 jsonData[key] = value;
             });
             console.log(jsonData);
-            jsonData.profileImage = imagePath;
+            jsonData.profileImage = imagePath===undefined? latestProfile : imagePath;
             
             // 중복된 닉네임인지 확인
             return fetchData('/users/nickname/check?nickname=' + jsonData.nickname);
