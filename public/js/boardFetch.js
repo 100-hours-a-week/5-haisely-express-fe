@@ -40,10 +40,11 @@ function processBoardData(data) {
     listBox.appendChild(fragment);
 }
 
-fetchData('/boards')
-    .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        processBoardData(res.data);
-    })
-    .catch(error => console.error('Error in boardFetch:', error.message));
+Promise.all([
+    fetchData('/boards'),
+]).then(([res]) => {
+    console.log(res);
+    console.log(res.data);
+    processBoardData(res.data);
+});
+

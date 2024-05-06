@@ -8,11 +8,15 @@ CHECKLIST
 */
 
 import { getBackendDomain } from './config.js';
-import { fetchData, formatNumber, formatDate, extractIdFromUrl, postData, deleteData, patchData } from './fetchData.js';
+import {validTitle,validContent } from './boardWrite.js';
+import { fetchData, formatNumber, formatDate, extractIdFromUrl, postData, deleteData, patchData, uploadImageAndGetPath } from './fetchData.js';
 
 var href = window.location.href;
 const extractedId = href.match(/\/boards\/(\d+)/)[1];
 console.log(extractedId);
+let titleValid = false;
+let contentValid = false;
+let writeButton;
 
 function processBoardEditData(data){
     const boardData = data.board;
@@ -23,6 +27,8 @@ function processBoardEditData(data){
 
     const postElement = document.createElement('div');
     postElement.classList.add('post-entity');
+    const latestImg = boardData.file_path;
+    const fileMsg = latestImg === undefined || latestImg === null ? "" : "기존 파일 명 : " + (typeof latestImg === 'string' ? latestImg.split('/').pop() : latestImg);
     postElement.innerHTML = `
     <form method="patch">
     <label for="postTitle"><h3>제목 * </h3></label>
@@ -36,7 +42,8 @@ function processBoardEditData(data){
     <p class="help-text left-margin">*helper text</p>
     <div class="board-image">
         <label for="attachFilePath"><h3>이미지</h3></label>
-        <input class = "left-margin"type="file" name="attachFilePath">
+        <input class = "left-margin"type="file" name="attachFilePath" id = "real-upload" accept="images/*">
+        <h4 class = "left-margin">${fileMsg}</h4>
     </div>
     <button type="submit" class="purple-btn" id="write-button"">수정하기</button>
 </form>
@@ -46,34 +53,72 @@ function processBoardEditData(data){
     listBox.appendChild(postElement);
     const boardEditBtn = postElement.querySelector('#write-button');
 
+    writeButton = document.getElementById('write-button');
+    titleValid = validTitle();
+    contentValid = validContent();
+    validButton();
+
+    console.log(document.getElementById("title"));
+
+    document.getElementById("title").addEventListener('input', function(){
+        titleValid = validTitle();
+        contentValid = validContent();
+        validButton();
+    });
+    document.getElementById("content").addEventListener('input', function(){
+        titleValid = validTitle();
+        contentValid = validContent();
+        validButton();
+    });
+    
+
     console.log(boardEditBtn);
     document.querySelector('form').addEventListener('submit', function(event) {
         event.preventDefault();
         const formData = new FormData(this);
-
-        let jsonData = {};
-        formData.forEach((value, key) => {
-            jsonData[key] = value;
-        });
-        console.log(jsonData);
-        patchData(jsonData,'/boards/'+extractedId)
-        .then((res)=>{
+    
+        uploadImageAndGetPath()
+        .then(imagePath => {
+            let jsonData = {};
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+            console.log(jsonData);
+            jsonData.attachFilePath = imagePath === undefined? latestImg : imagePath;
+    
+            return patchData(jsonData, '/boards/' + extractedId);
+        })
+        .then((res) => {
             console.log(res);
-            if (res.status === 201){
-                window.location.href = '/boards/detail/'+extractedId;
-            }else{
-                window.location.href = '/boards'
+            if (res.status === 201) {
+                window.location.href = '/boards/detail/' + extractedId;
+            } else {
+                window.location.href = '/boards';
             }
+        })
+        .catch(error => {
+            console.error('Error occurred:', error);
         });
     });
-
+    
 }
 
-fetchData('/boards/'+extractedId)
-    .then((res)=>{
-        console.log(res);
-        processBoardEditData(res.data);
-    });
+function validButton(){
+    if (titleValid&&contentValid){
+        writeButton.style.backgroundColor = 'var(--btn-purple-possible)';
+        writeButton.disabled = false;
+        writeButton.style.cursor = 'pointer';
+    }else {
+        writeButton.style.backgroundColor = 'var(--btn-purple)';
+        writeButton.disabled = true;
+        writeButton.style.cursor = 'not-allowed';
+    }
+}
 
 
-
+Promise.all([
+    fetchData('/boards/'+extractedId),
+]).then(([res]) => {
+    console.log(res);
+    processBoardEditData(res.data);
+});

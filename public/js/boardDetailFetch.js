@@ -26,6 +26,10 @@ function processBoardDetailData(data){
 
     const postElement = document.createElement('div');
     postElement.classList.add('post-entity');
+    const latestImg = boardData.file_path;
+    console.log(boardData.file_path);
+    const fileHtml = latestImg === undefined || latestImg === null ? "" : `<img class="board-image" src="${getBackendDomain() + boardData.file_path}" alt="board-img">`;
+
     postElement.innerHTML = `
     <article class="head">
         <h2 class="title">
@@ -35,7 +39,7 @@ function processBoardDetailData(data){
             <article class="text-detail">
             <p>
                 <article class="box">
-                <img class="logo" src="${getBackendDomain()+boardData.profile_image_path}" alt="profile-img">
+                <img class="logo" src="${getBackendDomain() + boardData.profile_image_path}" alt="profile-img">
                 </article>
                 <h3 class="writer-detail">${boardData.nickname}</h3>
             </p>
@@ -43,32 +47,32 @@ function processBoardDetailData(data){
             ${formatDate(boardData.created_at)}
             </h4>
             </article>
-
-            <article class = "small-buttons">
-                <a class="sbutton"id="board-edit-btn">수정</a>
-                <a class="sbutton" id="board-delete-btn" >삭제</a>
+    
+            <article class="small-buttons">
+                <a class="sbutton" id="board-edit-btn">수정</a>
+                <a class="sbutton" id="board-delete-btn">삭제</a>
             </article>
         </article>
     </article>
-
+    
     <hr class="horizontal-rule"/>
-
-    <article class = "main">
-        <img class="board-image" src="${getBackendDomain() + boardData.file_path}" alt="board-img">
-        <p class = "content">${boardData.post_content}</article>
-
-    <article class = "infos">
-        <article class = "info">
+    
+    <article class="main">
+        ${fileHtml}
+        <p class="content">${boardData.post_content}</p>
+    
+    <article class="infos">
+        <article class="info">
             <p class="num">${formatNumber(boardData.hits)}</p>
             <h3>조회수</h3>
         </article>
-        <article class = "info">
+        <article class="info">
             <p class="num">${formatNumber(boardData.comment_count)}</p>
             <h3>댓글</h3>
         </article>
     </article>
     `;
-
+    
 
     listBox.appendChild(postElement);
 
@@ -155,12 +159,14 @@ function processCommentData(data){
     });
 }
 
-fetchData('/boards/'+extractedId)
-    .then((res)=>{
-        console.log(res.data);
-        processBoardDetailData(res.data);
-        processCommentData(res.data);
-    });
+Promise.all([
+    fetchData('/boards/'+extractedId),
+]).then(([res]) => {
+    console.log(res.data);
+    processBoardDetailData(res.data);
+    processCommentData(res.data);
+});
+
 
 document.querySelector('form').addEventListener('submit', function(event) {
     event.preventDefault();

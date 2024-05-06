@@ -64,3 +64,6 @@ document.getElementById("content").addEventListener('input', function(){
 });
 
 
+
+
+export { validTitle, validContent, validButton };

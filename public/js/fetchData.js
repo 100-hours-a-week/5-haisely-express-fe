@@ -65,6 +65,34 @@ async function patchData(jsonData, path){
     }
 }
 
+function uploadImageAndGetPath() {
+    return new Promise((resolve, reject) => {
+        var formData = new FormData();
+        var file = document.getElementById('real-upload').files[0];
+
+        if (!file) {
+            resolve();
+            return;
+        }
+
+        formData.append('myFile', file);
+
+        fetch(getBackendDomain()+'/uploadImg', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(res => {
+            var imagePath = res.data.file_path;
+            resolve(imagePath); // 이미지 경로 반환
+        })
+        .catch(error => {
+            console.error('Error uploading image:', error);
+            reject(error);
+        });
+    });
+}
+
 function extractIdFromUrl() {
     var href = window.location.href;
     var regex = /\/(\d+)(?:\/)?$/; // 맨 뒤에 있는 숫자를 추출
@@ -108,4 +136,4 @@ function formatDate(dateString) {
     return newDateString;
 }
 
-export { fetchData, formatNumber, formatDate, postData, extractIdFromUrl, deleteData, patchData };
+export { fetchData, formatNumber, formatDate, postData, extractIdFromUrl, deleteData, patchData, uploadImageAndGetPath };

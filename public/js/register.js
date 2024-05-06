@@ -23,7 +23,8 @@ CHECKLIST
 [ ] button에 disable 넣어두기
 */
 
-import { postData, fetchData } from './fetchData.js';
+import { postData, fetchData, uploadImageAndGetPath } from './fetchData.js';
+import { getBackendDomain } from './config.js';
 
 // 이메일 유효성 확인
 function validEmail(){
@@ -173,43 +174,53 @@ document.getElementById('nickname').addEventListener('change', function() {
     validButton();
 });
 
-
 document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const formData = new FormData(this);
+    event.preventDefault(); // 기본 폼 제출 동작 방지
 
-    let jsonData = {};
-    formData.forEach((value, key) => {
-        jsonData[key] = value;
-    });
+    let jsonData; // jsonData 변수를 선언
 
-    console.log(jsonData);
-    fetchData('/users/email/check?email='+jsonData.email)
-    .then((res)=>{
-        console.log(res);
-        if (res.status !== 200){
+    uploadImageAndGetPath()
+    .then(imagePath => {
+        const formData = new FormData(this);
+
+        jsonData = {}; // jsonData 변수에 값을 할당
+
+        formData.forEach((value, key) => {
+            jsonData[key] = value;
+        });
+
+        jsonData.profileImagePath = imagePath;
+
+        console.log(jsonData);
+
+        return fetchData('/users/email/check?email=' + jsonData.email);
+    })
+    .then(emailCheckRes => {
+        console.log(emailCheckRes);
+        if (emailCheckRes.status !== 200) {
             alert('중복된 이메일입니다!');
-            return;
+            throw new Error('중복된 이메일');
         }
-    });
-
-    fetchData('/users/nickname/check?nickname='+jsonData.nickname)
-    .then((res)=>{
-        console.log(res);
-        if (res.status !== 200){
+        return fetchData('/users/nickname/check?nickname=' + jsonData.nickname);
+    })
+    .then(nicknameCheckRes => {
+        console.log(nicknameCheckRes);
+        if (nicknameCheckRes.status !== 200) {
             alert('중복된 닉네임입니다!');
-            return;
+            throw new Error('중복된 닉네임');
         }
-    });
-
-    postData(jsonData,'/users/signup')
-    .then((res)=>{
-        console.log(res);
-        if (res.status === 201){
+        return postData(jsonData, '/users/signup');
+    })
+    .then(signupRes => {
+        console.log(signupRes);
+        if (signupRes.status === 201) {
             window.location.href = '/login';
             alert('회원가입이 완료되었습니다!');
-        }else{
+        } else {
             alert('입력 정보가 올바르지 않습니다!');
         }
+    })
+    .catch(error => {
+        console.error('Error occurred:', error);
     });
 });
