@@ -23,7 +23,8 @@ function processBoardEditData(data){
 
     const postElement = document.createElement('div');
     postElement.classList.add('post-entity');
-    const latestImg =  boardData.file_path;
+    const latestImg = boardData.file_path;
+    const fileMsg = latestImg === undefined || latestImg === null ? "" : "기존 파일 명 : " + (typeof latestImg === 'string' ? latestImg.split('/').pop() : latestImg);
     postElement.innerHTML = `
     <form method="patch">
     <label for="postTitle"><h3>제목 * </h3></label>
@@ -38,6 +39,7 @@ function processBoardEditData(data){
     <div class="board-image">
         <label for="attachFilePath"><h3>이미지</h3></label>
         <input class = "left-margin"type="file" name="attachFilePath" id = "real-upload" accept="images/*">
+        <h4 class = "left-margin">${fileMsg}</h4>
     </div>
     <button type="submit" class="purple-btn" id="write-button"">수정하기</button>
 </form>
@@ -76,9 +78,7 @@ function processBoardEditData(data){
         });
     });
     
-
 }
-
 fetchData('/boards/'+extractedId)
     .then((res)=>{
         console.log(res);
