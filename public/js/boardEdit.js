@@ -11,7 +11,7 @@ import { getBackendDomain } from './config.js';
 import {validTitle,validContent } from './boardWrite.js';
 import { fetchData, formatNumber, formatDate, extractIdFromUrl, postData, deleteData, patchData, uploadImageAndGetPath } from './fetchData.js';
 
-var href = window.location.href;
+const href = window.location.href;
 const extractedId = href.match(/\/boards\/(\d+)/)[1];
 console.log(extractedId);
 let titleValid = false;
@@ -90,7 +90,7 @@ function processBoardEditData(data){
         })
         .then((res) => {
             console.log(res);
-            if (res.status === 201) {
+            if (res.status === 200) {
                 window.location.href = '/boards/detail/' + extractedId;
             } else {
                 window.location.href = '/boards';

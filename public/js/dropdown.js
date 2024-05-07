@@ -5,7 +5,7 @@ CHECKLIST
 */
 
 function dropDown() {
-    var dropDownContent = document.getElementById("dropdown-content");
+    let dropDownContent = document.getElementById("dropdown-content");
     if (dropDownContent.style.display === 'block') {
         dropDownContent.style.display = 'none';
     } else {
@@ -14,6 +14,6 @@ function dropDown() {
 }
 
 
-var dropBtn = document.getElementById("drop-btn");
+const dropBtn = document.getElementById("drop-btn");
 
 dropBtn.addEventListener('click',dropDown);

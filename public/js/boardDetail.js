@@ -11,8 +11,8 @@ import { fetchData, formatNumber, formatDate, extractIdFromUrl, deleteData } fro
 
 
 function validateComment() {
-    var commentInput = document.getElementById('comment');
-    var commentBtns = document.querySelectorAll('.comment-btn');
+    let commentInput = document.getElementById('comment');
+    let commentBtns = document.querySelectorAll('.comment-btn');
     
     commentBtns.forEach(function(commentBtn) {if (isValue(commentInput.value)) {
         commentBtn.style.backgroundColor = 'var(--btn-purple-possible)';
@@ -34,14 +34,14 @@ console.log(deleteConfirmBtn);
 const commentCancelBtn = document.getElementById('comment-delete-cancel');
 const commentConfirmBtn = document.getElementById('comment-delete-confirm');
 // 댓글 삭제 모달
-var commentDeleteModal = document.getElementById('comment-delete');
+const commentDeleteModal = document.getElementById('comment-delete');
 
 
 document.getElementById('comment').addEventListener('input', validateComment);
 
 const extractedId = extractIdFromUrl();
 
-var overlay = document.getElementById('overlay');
+const overlay = document.getElementById('overlay');
 
 deleteCancelBtn.addEventListener('click', function(){
     boardDeleteModal.style.display = 'none';

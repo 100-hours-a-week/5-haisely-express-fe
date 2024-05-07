@@ -20,7 +20,7 @@ function processBoardData(data) {
             <article class="content">
                 <h2 class="title">${post.post_title}</h2>
                 <article class="detail">
-                    <h4 class="board-detail">좋아요 ${formatNumber(post.like)} 댓글 ${formatNumber(post.comment_count)}  조회수 ${formatNumber(post.hits)} </h4>
+                    <h4 class="board-detail">댓글 ${formatNumber(post.comment_count)}  조회수 ${formatNumber(post.hits)} </h4>
                     <h4 class="time-detail">${formatDate(post.created_at)} </h4>
                 </article>
             </article>

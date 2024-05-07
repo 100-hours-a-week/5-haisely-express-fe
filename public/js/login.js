@@ -6,10 +6,10 @@ TODO
 import { postData } from './fetchData.js';
 
 function validateInput() {
-    var emailInput = document.getElementById('email');
-    var passwordInput = document.getElementById('password');
-    var helpMessage = document.getElementById('login-help');
-    var loginButton = document.getElementById('login-btn');
+    let emailInput = document.getElementById('email');
+    let passwordInput = document.getElementById('password');
+    let helpMessage = document.getElementById('login-help');
+    let loginButton = document.getElementById('login-btn');
 
     if (emailValidChk(emailInput.value) && pwValidChk(passwordInput.value)) {
         helpMessage.innerHTML = '&nbsp';

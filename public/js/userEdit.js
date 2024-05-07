@@ -6,8 +6,8 @@ CHECKLIST
 */
 
 function validNickname(){
-    var nicknameInput = document.getElementById('nickname')
-    var nicknameMessage = document.getElementById('nickname-help');
+    let nicknameInput = document.getElementById('nickname')
+    let nicknameMessage = document.getElementById('nickname-help');
     
      // 값이 비어있을 때
     if(!isValue(nicknameInput.value)){
@@ -37,9 +37,9 @@ function validNickname(){
     return true;
 }
 
-var userDeleteModal = document.getElementById('user-delete');
-var userDeleteBtn = document.getElementById('user-delete-btn');
-var overlay = document.getElementById('overlay');
+const userDeleteModal = document.getElementById('user-delete');
+const userDeleteBtn = document.getElementById('user-delete-btn');
+const overlay = document.getElementById('overlay');
 userDeleteBtn.addEventListener('click', function() {
     userDeleteModal.style.display = 'flex';
     freeze(overlay);
@@ -47,5 +47,5 @@ userDeleteBtn.addEventListener('click', function() {
 
 
 
-var editBtn = document.getElementById('save');
+const editBtn = document.getElementById('save');
 editBtn.addEventListener('click',validNickname);

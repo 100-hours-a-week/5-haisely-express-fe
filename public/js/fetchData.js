@@ -42,7 +42,7 @@ async function deleteData(path){
         const response = await fetch(address, {
             method: 'DELETE'
         });
-        console.log("hihi");
+        console.log(response);
         return response.json();
         }catch(error) {
         console.error('Error:', error);
@@ -67,8 +67,8 @@ async function patchData(jsonData, path){
 
 function uploadImageAndGetPath() {
     return new Promise((resolve, reject) => {
-        var formData = new FormData();
-        var file = document.getElementById('real-upload').files[0];
+        let formData = new FormData();
+        let file = document.getElementById('real-upload').files[0];
 
         if (!file) {
             resolve();
@@ -83,7 +83,7 @@ function uploadImageAndGetPath() {
         })
         .then(response => response.json())
         .then(res => {
-            var imagePath = res.data.file_path;
+            let imagePath = res.data.file_path;
             resolve(imagePath); // 이미지 경로 반환
         })
         .catch(error => {
@@ -94,9 +94,9 @@ function uploadImageAndGetPath() {
 }
 
 function extractIdFromUrl() {
-    var href = window.location.href;
-    var regex = /\/(\d+)(?:\/)?$/; // 맨 뒤에 있는 숫자를 추출
-    var match = regex.exec(href);
+    const href = window.location.href;
+    const regex = /\/(\d+)(?:\/)?$/; // 맨 뒤에 있는 숫자를 추출
+    let match = regex.exec(href);
     if (match && match.length > 1) {
         return match[1]; // 첫 번째 그룹에 해당하는 부분 반환 (즉, 숫자)
     } else {
@@ -114,20 +114,20 @@ function formatNumber(number) {
 
 function formatDate(dateString) {
     // 날짜 문자열에서 연, 월, 일, 시, 분, 초를 추출
-    var parts = dateString.match(/(\d{4})\. (\d{1,2})\. (\d{1,2})\. (오전|오후) (\d{1,2}):(\d{1,2}):(\d{1,2})/);
+    const parts = dateString.match(/(\d{4})\. (\d{1,2})\. (\d{1,2})\. (오전|오후) (\d{1,2}):(\d{1,2}):(\d{1,2})/);
 
     // 추출한 정보로 날짜 객체 생성
-    var year = parseInt(parts[1]);
-    var month = parseInt(parts[2]) - 1; // 월은 0부터 시작하므로 1을 빼줍니다.
-    var day = parseInt(parts[3]);
-    var hour = parseInt(parts[5]) + (parts[4] === "오후" ? 12 : 0); // 오후일 경우 시에 12를 더합니다.
-    var minute = parseInt(parts[6]);
-    var second = parseInt(parts[7]);
+    const year = parseInt(parts[1]);
+    const month = parseInt(parts[2]) - 1; // 월은 0부터 시작하므로 1을 빼줍니다.
+    const day = parseInt(parts[3]);
+    const hour = parseInt(parts[5]) + (parts[4] === "오후" ? 12 : 0); // 오후일 경우 시에 12를 더합니다.
+    const minute = parseInt(parts[6]);
+    const second = parseInt(parts[7]);
 
-    var dateObj = new Date(year, month, day, hour, minute, second);
+    const dateObj = new Date(year, month, day, hour, minute, second);
 
     // 새로운 형식의 날짜 문자열 생성
-    var newDateString = dateObj.getFullYear() + "-" + 
+    const newDateString = dateObj.getFullYear() + "-" + 
                         ('0' + (dateObj.getMonth() + 1)).slice(-2) + "-" + 
                         ('0' + dateObj.getDate()).slice(-2) + " " + 
                         ('0' + dateObj.getHours()).slice(-2) + ":" + 

@@ -8,7 +8,7 @@ CHECKLIST
 
 // 제목 27자 이상 확인
 function validTitle(){
-    var titleInput = document.getElementById('title');
+    let titleInput = document.getElementById('title');
     if (!isValue(titleInput.value)){
         return false;
     }
@@ -23,7 +23,7 @@ function validTitle(){
 }
 
 function validContent(){
-    var contentInput = document.getElementById('content');
+    let contentInput = document.getElementById('content');
     if (!isValue(contentInput.value)){
         return false;
     }
@@ -36,7 +36,7 @@ let contentValid = false;
 
 
 function validButton(){
-    var writeButton = document.getElementById('write-button');
+    let writeButton = document.getElementById('write-button');
     if (titleValid&&contentValid){
         writeButton.style.backgroundColor = 'var(--btn-purple-possible)';
         writeButton.disabled = false;

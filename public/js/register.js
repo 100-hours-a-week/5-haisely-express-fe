@@ -28,8 +28,8 @@ import { getBackendDomain } from './config.js';
 
 // 이메일 유효성 확인
 function validEmail(){
-    var emailInput = document.getElementById('email');
-    var emailMessage = document.getElementById('email-help');
+    let emailInput = document.getElementById('email');
+    let emailMessage = document.getElementById('email-help');
 
     // 값이 비어있을 때
     if(!isValue(emailInput.value)){
@@ -55,8 +55,8 @@ function validEmail(){
 }
 
 function validPassword(){
-    var passwordInput = document.getElementById('password');
-    var passwordMessage = document.getElementById('password-help');
+    let passwordInput = document.getElementById('password');
+    let passwordMessage = document.getElementById('password-help');
 
     // 값이 비어있을 때
     if(!isValue(passwordInput.value)){
@@ -76,10 +76,10 @@ function validPassword(){
 }
 
 function validConfirmPassword(){
-    var passwordInput = document.getElementById('password');
-    var passwordMessage = document.getElementById('password-help');
-    var rePasswordInput = document.getElementById('confirm-password');
-    var rePasswordMessage = document.getElementById('confirm-password-help');
+    let passwordInput = document.getElementById('password');
+    let passwordMessage = document.getElementById('password-help');
+    let rePasswordInput = document.getElementById('confirm-password');
+    let rePasswordMessage = document.getElementById('confirm-password-help');
 
      // 값이 비어있을 때
     if(!isValue(rePasswordInput.value)){
@@ -108,8 +108,8 @@ function validConfirmPassword(){
 
 // 닉네임 유효성 확인
 function validNickname(){
-    var nicknameInput = document.getElementById('nickname')
-    var nicknameMessage = document.getElementById('nickname-help');
+    let nicknameInput = document.getElementById('nickname')
+    let nicknameMessage = document.getElementById('nickname-help');
     
      // 값이 비어있을 때
     if(!isValue(nicknameInput.value)){
@@ -145,7 +145,7 @@ let confirmPasswordValid = false;
 let nicknameValid = false;
 
 function validButton(){
-    var registerButton = document.getElementById('register-btn');
+    let registerButton = document.getElementById('register-btn');
     if (emailValid&&passwordValid&&confirmPasswordValid&&nicknameValid){
         registerButton.style.backgroundColor = 'var(--btn-purple-possible)';
         registerButton.disabled = false;

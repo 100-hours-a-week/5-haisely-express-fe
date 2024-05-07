@@ -51,10 +51,10 @@ function pwValidChk(password){
     }
 
     // 대문자, 소문자, 숫자, 특수문자 중 최소 1개 이상이 포함
-    var uppercaseRegex = /[A-Z]/;
-    var lowercaseRegex = /[a-z]/;
-    var numberRegex = /[0-9]/;
-    var specialCharacterRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+    const uppercaseRegex = /[A-Z]/;
+    const lowercaseRegex = /[a-z]/;
+    const numberRegex = /[0-9]/;
+    const specialCharacterRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
 
     if (!uppercaseRegex.test(password) ||
         !lowercaseRegex.test(password) ||

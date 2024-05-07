@@ -135,7 +135,7 @@ const userDeleteModal = document.getElementById('user-delete');
 console.log(deleteConfirmBtn);
 
 
-var overlay = document.getElementById('overlay');
+const overlay = document.getElementById('overlay');
 
 deleteCancelBtn.addEventListener('click', function(){
     userDeleteModal.style.display = 'none';

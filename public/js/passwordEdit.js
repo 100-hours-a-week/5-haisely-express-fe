@@ -6,8 +6,8 @@ import { patchData } from './fetchData.js';
 const extractedId = 1;
 
 function validPassword(){
-    var passwordInput = document.getElementById('password');
-    var passwordMessage = document.getElementById('password-help');
+    let passwordInput = document.getElementById('password');
+    let passwordMessage = document.getElementById('password-help');
 
     // 값이 비어있을 때
     if(!isValue(passwordInput.value)){
@@ -27,10 +27,10 @@ function validPassword(){
 }
 
 function validConfirmPassword(){
-    var passwordInput = document.getElementById('password');
-    var passwordMessage = document.getElementById('password-help');
-    var rePasswordInput = document.getElementById('confirm-password');
-    var rePasswordMessage = document.getElementById('confirm-password-help');
+    let passwordInput = document.getElementById('password');
+    let passwordMessage = document.getElementById('password-help');
+    let rePasswordInput = document.getElementById('confirm-password');
+    let rePasswordMessage = document.getElementById('confirm-password-help');
 
      // 값이 비어있을 때
     if(!isValue(rePasswordInput.value)){
@@ -60,7 +60,7 @@ let passwordValid = false;
 let confirmPasswordValid = false;
 
 function validButton(){
-    var saveButton = document.getElementById('save');
+    const saveButton = document.getElementById('save');
     if (passwordValid&&confirmPasswordValid){
         saveButton.style.backgroundColor = 'var(--btn-purple-possible)';
         saveButton.disabled = false;
