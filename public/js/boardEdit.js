@@ -90,7 +90,7 @@ function processBoardEditData(data){
         })
         .then((res) => {
             console.log(res);
-            if (res.status === 201) {
+            if (res.status === 200) {
                 window.location.href = '/boards/detail/' + extractedId;
             } else {
                 window.location.href = '/boards';
