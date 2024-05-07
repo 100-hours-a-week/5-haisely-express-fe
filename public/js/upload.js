@@ -1,5 +1,5 @@
 function getProfileImage(e) {
-    var helpMessage = document.getElementById('profile-help');
+    let helpMessage = document.getElementById('profile-help');
     const file = e.currentTarget.files[0]; // 첫 번째 파일만 선택
 
     // 파일을 안 올린 경우
@@ -29,7 +29,7 @@ const realUpload = document.getElementById('real-upload');
 const plus = document.getElementById('plus');
 
 plus.addEventListener('click', function () {
-    var helpMessage = document.getElementById('profile-help');
+    let helpMessage = document.getElementById('profile-help');
     const imagePreview = document.getElementById('upload-img');
 
     helpMessage.innerHTML ="*프로필 사진을 추가해주세요.";
