@@ -8,11 +8,14 @@ import { getBackendDomain } from './config.js';
 async function fetchData(path) {
     const address = getBackendDomain() + path;
     try {
-        const response = await fetch(address);
-        // console.log(response);
-        // if (!response.ok) {
-        //     throw new Error('Network response was not ok');
-        // }
+        const response = await fetch(address,
+            {
+                method: 'GET',
+                credentials: 'include'
+            });
+        if (response.status === 401) {
+            window.location.href = '/login';
+        }
         return response.json(); // JSON 데이터 반환
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -25,11 +28,15 @@ async function postData(jsonData, path){
     try{
         const response = await fetch(address, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(jsonData)
         });
+        if (response.status === 401) {
+            window.location.href = '/login';
+        }
         return response.json();
         }catch(error) {
         console.error('Error:', error);
@@ -40,9 +47,13 @@ async function deleteData(path){
     const address = getBackendDomain() + path;
     try{
         const response = await fetch(address, {
-            method: 'DELETE'
+            method: 'DELETE',
+            credentials: 'include'
         });
         console.log(response);
+        if (response.status === 401) {
+            window.location.href = '/login';
+        }
         return response.json();
         }catch(error) {
         console.error('Error:', error);
@@ -54,11 +65,15 @@ async function patchData(jsonData, path){
     try{
         const response = await fetch(address, {
             method: 'PATCH',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(jsonData)
         });
+        if (response.status === 401) {
+            window.location.href = '/login';
+        }
         return response.json();
         }catch(error) {
         console.error('Error:', error);
@@ -79,9 +94,15 @@ function uploadImageAndGetPath() {
 
         fetch(getBackendDomain()+'/uploadImg', {
             method: 'POST',
-            body: formData
+            body: formData,
+            credentials: 'include'
         })
-        .then(response => response.json())
+        .then(response => {
+            if (response.status === 401) {
+                window.location.href = '/login';
+            }
+            response.json()
+        })
         .then(res => {
             let imagePath = res.data.file_path;
             resolve(imagePath); // 이미지 경로 반환
