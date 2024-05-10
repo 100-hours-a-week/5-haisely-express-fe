@@ -91,7 +91,7 @@ document.querySelector('form').addEventListener('submit', function(event) {
     });
     console.log(jsonData);
 
-    patchData(jsonData,'/users/'+extractedId+'/password')
+    patchData(jsonData,'/users/password')
     .then((res)=>{
         console.log(res);
         if (res.status !== 200){

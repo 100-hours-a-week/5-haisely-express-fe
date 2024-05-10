@@ -103,7 +103,7 @@ function processUserEditData(data){
             }
     
             // 중복된 닉네임이 아니면 patchData 함수 실행
-            return patchData(jsonData, '/users/' + extractedId);
+            return patchData(jsonData, '/users');
         })
         .then(patchRes => {
             console.log(patchRes);
@@ -123,7 +123,7 @@ function processUserEditData(data){
 
 
 Promise.all([
-    fetchData('/users/'+extractedId),
+    fetchData('/users'),
 ]).then(([res]) => {
     console.log(res);
     processUserEditData(res.data);
@@ -143,7 +143,7 @@ deleteCancelBtn.addEventListener('click', function(){
 });
 
 deleteConfirmBtn.addEventListener('click', function(){
-    deleteData('/users/'+extractedId)
+    deleteData('/users')
     .then((res)=>{
         console.log(res);
         window.location.href = '/login'

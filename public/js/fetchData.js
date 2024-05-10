@@ -15,6 +15,8 @@ async function fetchData(path) {
             });
         if (response.status === 401) {
             window.location.href = '/login';
+        } else if (response.status === 403) {
+            alert("권한이 없습니다!");
         }
         return response.json(); // JSON 데이터 반환
     } catch (error) {
@@ -36,6 +38,8 @@ async function postData(jsonData, path){
         });
         if (response.status === 401) {
             window.location.href = '/login';
+        } else if (response.status === 403) {
+            alert("권한이 없습니다!");
         }
         return response.json();
         }catch(error) {
@@ -53,6 +57,8 @@ async function deleteData(path){
         console.log(response);
         if (response.status === 401) {
             window.location.href = '/login';
+        } else if (response.status === 403) {
+            alert("권한이 없습니다!");
         }
         return response.json();
         }catch(error) {
@@ -73,6 +79,8 @@ async function patchData(jsonData, path){
         });
         if (response.status === 401) {
             window.location.href = '/login';
+        } else if (response.status === 403) {
+            alert("권한이 없습니다!");
         }
         return response.json();
         }catch(error) {
@@ -100,6 +108,8 @@ function uploadImageAndGetPath() {
         .then(response => {
             if (response.status === 401) {
                 window.location.href = '/login';
+            } else if (response.status === 403) {
+                alert("권한이 없습니다!");
             }
             response.json()
         })
