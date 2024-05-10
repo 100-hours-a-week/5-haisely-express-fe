@@ -51,8 +51,11 @@ deleteCancelBtn.addEventListener('click', function(){
 deleteConfirmBtn.addEventListener('click', function(){
     deleteData('/boards/'+extractedId)
     .then((res)=>{
-        console.log(res);
-        window.location.href = '/boards'
+        if (res.status === 200) {
+            alert("삭제되었습니다!");
+            window.location.href = '/boards';
+        } 
+        window.location.href = '/boards/detail/'+extractedId;
     })
 });
 
@@ -65,8 +68,10 @@ commentConfirmBtn.addEventListener('click', function(){
     const commentId = commentDeleteModal.dataset.commentId;
     deleteData('/boards/'+extractedId+'/comments/'+commentId)
     .then((res)=>{
-        console.log(res);
-        window.location.href = '/boards/detail/'+extractedId
+        if (res.status === 200) {
+            alert("삭제되었습니다!")
+        } 
+        window.location.href = '/boards/detail/'+extractedId;
     })
 });
 

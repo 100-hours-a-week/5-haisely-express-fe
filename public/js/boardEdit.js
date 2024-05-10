@@ -91,10 +91,9 @@ function processBoardEditData(data){
         .then((res) => {
             console.log(res);
             if (res.status === 200) {
-                window.location.href = '/boards/detail/' + extractedId;
-            } else {
-                window.location.href = '/boards';
-            }
+                alert("수정되었습니다!")
+            } 
+            window.location.href = '/boards/detail/' + extractedId;
         })
         .catch(error => {
             console.error('Error occurred:', error);
