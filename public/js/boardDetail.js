@@ -51,7 +51,7 @@ deleteCancelBtn.addEventListener('click', function(){
 deleteConfirmBtn.addEventListener('click', function(){
     deleteData('/boards/'+extractedId)
     .then((res)=>{
-        if (res.status === 200) {
+        if (res.status === 204) {
             alert("삭제되었습니다!");
             window.location.href = '/boards';
         } 
