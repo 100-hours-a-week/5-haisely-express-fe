@@ -18,6 +18,7 @@ async function fetchData(path) {
         } else if (response.status === 403) {
             alert("권한이 없습니다!");
         }
+        console.log(response);
         return response.json(); // JSON 데이터 반환
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -88,41 +89,47 @@ async function patchData(jsonData, path){
     }
 }
 
-function uploadImageAndGetPath() {
-    return new Promise((resolve, reject) => {
+async function uploadImageAndGetPath() {
+    try {
         let formData = new FormData();
         let file = document.getElementById('real-upload').files[0];
 
         if (!file) {
-            resolve();
             return;
         }
 
         formData.append('myFile', file);
 
-        fetch(getBackendDomain()+'/uploadImg', {
+        const response = await fetch(getBackendDomain() + '/uploadImg', {
             method: 'POST',
             body: formData,
             credentials: 'include'
-        })
-        .then(response => {
-            if (response.status === 401) {
-                window.location.href = '/login';
-            } else if (response.status === 403) {
-                alert("권한이 없습니다!");
-            }
-            response.json()
-        })
-        .then(res => {
-            let imagePath = res.data.file_path;
-            resolve(imagePath); // 이미지 경로 반환
-        })
-        .catch(error => {
-            console.error('Error uploading image:', error);
-            reject(error);
         });
-    });
+
+        console.log(response);
+
+        if (response.status === 401) {
+            window.location.href = '/login';
+            return;
+        } else if (response.status === 403) {
+            alert("권한이 없습니다!");
+            return;
+        }
+
+        const res = await response.json();
+        console.log(res);
+
+        if (res.data && res.data.file_path) {
+            return res.data.file_path; // 이미지 경로 반환
+        } else {
+            throw new Error('Invalid response format');
+        }
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        throw error;
+    }
 }
+
 
 function extractIdFromUrl() {
     const href = window.location.href;
@@ -136,6 +143,7 @@ function extractIdFromUrl() {
 }
 
 function formatNumber(number) {
+    if (number == null) return '0';
     if (number >= 1000) {
         return (number / 1000).toFixed(1) + 'k';
     } else {
@@ -143,28 +151,17 @@ function formatNumber(number) {
     }
 }
 
-function formatDate(dateString) {
-    // 날짜 문자열에서 연, 월, 일, 시, 분, 초를 추출
-    const parts = dateString.match(/(\d{4})\. (\d{1,2})\. (\d{1,2})\. (오전|오후) (\d{1,2}):(\d{1,2}):(\d{1,2})/);
+const formatDate = (isoString) => {
+    const date = new Date(isoString);
 
-    // 추출한 정보로 날짜 객체 생성
-    const year = parseInt(parts[1]);
-    const month = parseInt(parts[2]) - 1; // 월은 0부터 시작하므로 1을 빼줍니다.
-    const day = parseInt(parts[3]);
-    const hour = parseInt(parts[5]) + (parts[4] === "오후" ? 12 : 0); // 오후일 경우 시에 12를 더합니다.
-    const minute = parseInt(parts[6]);
-    const second = parseInt(parts[7]);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
 
-    const dateObj = new Date(year, month, day, hour, minute, second);
-
-    // 새로운 형식의 날짜 문자열 생성
-    const newDateString = dateObj.getFullYear() + "-" + 
-                        ('0' + (dateObj.getMonth() + 1)).slice(-2) + "-" + 
-                        ('0' + dateObj.getDate()).slice(-2) + " " + 
-                        ('0' + dateObj.getHours()).slice(-2) + ":" + 
-                        ('0' + dateObj.getMinutes()).slice(-2) + ":" + 
-                        ('0' + dateObj.getSeconds()).slice(-2);
-    return newDateString;
-}
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
 
 export { fetchData, formatNumber, formatDate, postData, extractIdFromUrl, deleteData, patchData, uploadImageAndGetPath };

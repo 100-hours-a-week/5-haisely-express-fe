@@ -179,6 +179,7 @@ document.querySelector('form').addEventListener('submit', function(event) {
 
     let jsonData; // jsonData 변수를 선언
 
+    console.log("upload!!");
     uploadImageAndGetPath()
     .then(imagePath => {
         const formData = new FormData(this);
@@ -192,6 +193,7 @@ document.querySelector('form').addEventListener('submit', function(event) {
         jsonData.profileImagePath = imagePath;
 
         console.log(jsonData);
+        console.log("updated!!!")
 
         return fetchData('/users/email/check?email=' + jsonData.email);
     })
