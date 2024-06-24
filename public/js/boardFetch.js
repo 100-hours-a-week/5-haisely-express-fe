@@ -11,25 +11,25 @@ function processBoardData(data) {
 
     const fragment = document.createDocumentFragment();
 
-    boardData.forEach((post) => {
+    boardData.forEach((board) => {
 
         const postElement = document.createElement('div');
         postElement.classList.add('unit');
-        postElement.setAttribute('onclick', `window.location.href='/boards/detail/${post.post_id}';`);
+        postElement.setAttribute('onclick', `window.location.href='/boards/detail/${board.board_id}';`);
         postElement.innerHTML = `
             <article class="content">
-                <h2 class="title">${post.post_title}</h2>
+                <h2 class="title">${board.title}</h2>
                 <article class="detail">
-                    <h4 class="board-detail">댓글 ${formatNumber(post.comment_count)}  조회수 ${formatNumber(post.hits)} </h4>
-                    <h4 class="time-detail">${formatDate(post.created_at)} </h4>
+                    <h4 class="board-detail">댓글 ${0}  조회수 ${formatNumber(board.hit)} </h4>
+                    <h4 class="time-detail">${formatDate(board.created_at)} </h4>
                 </article>
             </article>
             <hr class="horizontal-rule"/>   
             <article class="writer">
                 <div class="box">
-                <img class="logo" src="${getBackendDomain()+post.profile_image_path} " alt="profile-img">
+                <img class="logo" src="${getBackendDomain()+board.profile_image} " alt="profile-img">
                 </div>
-                <h3>${post.nickname}</h3>
+                <h3>${board.nickname}</h3>
             </article>
         `;
 

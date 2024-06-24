@@ -4,6 +4,7 @@ CHECKLIST
 [x] board 내용 가져오기
 [x] comments 내용 가져오기
 [ ] 파일 첨부 null 체크
+[ ] comment count??
 */
 
 import { getBackendDomain } from './config.js';
@@ -33,13 +34,13 @@ function processBoardDetailData(data){
     postElement.innerHTML = `
     <article class="head">
         <h2 class="title">
-            ${boardData.post_title}
+            ${boardData.title}
         </h2>
         <article class="detail">
             <article class="text-detail">
             <p>
                 <article class="box">
-                <img class="logo" src="${getBackendDomain() + boardData.profile_image_path}" alt="profile-img">
+                <img class="logo" src="${getBackendDomain() + boardData.profile_image}" alt="profile-img">
                 </article>
                 <h3 class="writer-detail">${boardData.nickname}</h3>
             </p>
@@ -59,7 +60,7 @@ function processBoardDetailData(data){
     
     <article class="main">
         ${fileHtml}
-        <p class="content">${boardData.post_content}</p>
+        <p class="content">${boardData.content}</p>
     
     <article class="infos">
         <article class="info">
@@ -67,7 +68,7 @@ function processBoardDetailData(data){
             <h3>조회수</h3>
         </article>
         <article class="info">
-            <p class="num">${formatNumber(boardData.comment_count)}</p>
+            <p class="num">${formatNumber(0)}</p>
             <h3>댓글</h3>
         </article>
     </article>
@@ -110,7 +111,7 @@ function processCommentData(data){
                     <article class="text-detail">
                     <p>
                         <article class="box">
-                        <img class="logo" src="${getBackendDomain()+comment.profile_image_path}" alt="profile-img">
+                        <img class="logo" src="${getBackendDomain()+comment.profile_image}" alt="profile-img">
                         </article>
                         <h3 class="writer-detail"> ${comment.nickname}</h3>
                     </p>
@@ -121,7 +122,7 @@ function processCommentData(data){
                     <a class="sbutton comment-delete-btn">삭제</a>
                     </article>
             </article>
-                <h4 class = "content">${comment.comment_content}</h4>`;
+                <h4 class = "content">${comment.content}</h4>`;
         fragment.appendChild(unit);
 
     });

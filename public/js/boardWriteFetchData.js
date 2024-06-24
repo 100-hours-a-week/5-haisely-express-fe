@@ -22,7 +22,8 @@ document.querySelector('form').addEventListener('submit', function(event) {
             if (res.status === 201) {
                 window.location.href = '/boards/detail/' + res.data.post_id;
             } else {
-                window.location.href = '/boards';
+                
+                // window.location.href = '/boards';
             }
         })
         .catch(error => {
